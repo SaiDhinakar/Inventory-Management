@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if is_stock_in %}Stock In{% else %}Stock Out{% endif %}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">{% if is_stock_in %}Add Stock{% else %}Remove Stock{% endif %}</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="product" class="form-label">Product</label>
+                            <select name="product" id="product" class="form-select" required>
+                                <option value="">Select Product</option>
+                                {% for product in products %}
+                                <option value="{{ product.id }}">{{ product.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="color" class="form-label">Color</label>
+                            <select name="color" id="color" class="form-select" required disabled>
+                                <option value="">Select Color</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="size" class="form-label">Size</label>
+                            <select name="size" id="size" class="form-select" required disabled>
+                                <option value="">Select Size</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="quantity" class="form-label">Quantity</label>
+                            <input type="number" class="form-control" id="quantity" name="quantity" min="1" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">
+                            {% if is_stock_in %}Add Stock{% else %}Remove Stock{% endif %}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('product').addEventListener('change', function() {
+    const productId = this.value;
+    const colorSelect = document.getElementById('color');
+    const sizeSelect = document.getElementById('size');
+    
+    // Reset and disable dropdowns if no product selected
+    if (!productId) {
+        colorSelect.innerHTML = '<option value="">Select Color</option>';
+        sizeSelect.innerHTML = '<option value="">Select Size</option>';
+        colorSelect.disabled = true;
+        sizeSelect.disabled = true;
+        return;
+    }
+
+    // Fetch colors and sizes for selected product
+    fetch(`/get-product-options/?product_id=${productId}`)
+        .then(response => response.json())
+        .then(data => {
+            // Update color dropdown
+            colorSelect.innerHTML = '<option value="">Select Color</option>';
+            data.colors.forEach(color => {
+                colorSelect.innerHTML += `<option value="${color.id}">${color.name}</option>`;
+            });
+            colorSelect.disabled = false;
+
+            // Update size dropdown
+            sizeSelect.innerHTML = '<option value="">Select Size</option>';
+            data.sizes.forEach(size => {
+                sizeSelect.innerHTML += `<option value="${size.id}">${size.name}</option>`;
+            });
+            sizeSelect.disabled = false;
+        });
+});
+</script>
+{% endblock %}

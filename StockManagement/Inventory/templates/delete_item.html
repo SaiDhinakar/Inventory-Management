@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Item{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center">Delete Item</h2>
+
+    <!-- Product Deletion Section -->
+    <div class="row mt-4">
+        <h3 class="col-12">Delete Product</h3>
+        {% for product in products %}
+        <div class="col-12 col-md-4">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p>{{ product.description }}</p>
+                    <a href="{% url 'delete_item' 'product' product.id %}" class="btn btn-danger"
+                        onclick="return confirm('Are you sure you want to delete the product: {{ product.name }}?');">Delete Product</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-warning">No products available to delete.</div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Color Deletion Section -->
+    <div class="row mt-4">
+        <h3 class="col-12">Delete Color</h3>
+        {% for color in colors %}
+        <div class="col-12 col-md-4">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{ color.name }}</h5>
+                    <a href="{% url 'delete_item' 'color' color.id %}" class="btn btn-danger"
+                        onclick="return confirm('Are you sure you want to delete the color: {{ color.name }}?');">Delete Color</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-warning">No colors available to delete.</div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Size Deletion Section -->
+    <div class="row mt-4">
+        <h3 class="col-12">Delete Size</h3>
+        {% for size in sizes %}
+        <div class="col-12 col-md-4">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{ size.name }}</h5>
+                    <a href="{% url 'delete_item' 'size' size.id %}" class="btn btn-danger"
+                        onclick="return confirm('Are you sure you want to delete the size: {{ size.name }}?');">Delete Size</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-warning">No sizes available to delete.</div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

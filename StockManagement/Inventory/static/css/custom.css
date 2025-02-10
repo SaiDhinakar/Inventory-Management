@@ -1,0 +1,11 @@
+.table-danger {
+    background-color: rgba(255, 0, 0, 0.1) !important;
+}
+
+.table-warning {
+    background-color: rgba(255, 193, 7, 0.1) !important;
+}
+
+.table-success {
+    background-color: rgba(40, 167, 69, 0.1) !important;
+}

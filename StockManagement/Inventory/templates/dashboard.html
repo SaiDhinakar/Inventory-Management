@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Stock Overview</h2>
+    <!-- Filters -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Product</label>
+                    <select name="product" class="form-select">
+                        <option value="">All Products</option>
+                        {% for product in products %}
+                        <option value="{{ product.id }}" {% if selected_product == product.id %}selected{% endif %}>
+                            {{ product.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Color</label>
+                    <select name="color" class="form-select">
+                        <option value="">All Colors</option>
+                        {% for color in colors %}
+                        <option value="{{ color.id }}" {% if selected_color == color.id %}selected{% endif %}>
+                            {{ color.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Size</label>
+                    <select name="size" class="form-select">
+                        <option value="">All Sizes</option>
+                        {% for size in sizes %}
+                        <option value="{{ size.id }}" {% if selected_size == size.id %}selected{% endif %}>
+                            {{ size.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">&nbsp;</label>
+                    <button type="submit" class="btn btn-primary w-100">Filter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Export Button -->
+    <div class="mb-4">
+        <a href="{% url 'export_stock' %}?product={{ selected_product }}&color={{ selected_color }}&size={{ selected_size }}"
+            class="btn btn-success">
+            <i class="fas fa-download me-2"></i> Export Stock Data
+        </a>
+    </div>
+
+    <!-- Stock Table -->
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Color</th>
+                    <th>Size</th>
+                    <th>Available Stock</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for stock in stocks %}
+                <tr class="table-{{ stock.status }}">
+                    <td>{{ stock.product.name }}</td>
+                    <td>{{ stock.color.name }}</td>
+                    <td>{{ stock.size.name }}</td>
+                    <td>
+                        {% if stock.status == 'danger' %}
+                            <span class="badge bg-danger">{{ stock.quantity }}</span>
+                        {% elif stock.status == 'warning' %}
+                            <span class="badge bg-warning text-dark">{{ stock.quantity }}</span>
+                        {% else %}
+                            <span class="badge bg-success">{{ stock.quantity }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center">No stock data available</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
