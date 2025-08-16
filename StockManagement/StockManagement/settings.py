@@ -25,8 +25,8 @@ SECRET_KEY = 'django-insecure-$7=%gyzwe%1^5@mi3%1tq%sca*p)1q58gx+rxo^9tip*_d0$9#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False # Set this to true if you are in dev environment
 
-ALLOWED_HOSTS = ["*", "0.0.0.0", "https://inventory-management-idvb.onrender.com"] # Modify this allowed host you want
-
+ALLOWED_HOSTS = ["*", "0.0.0.0"] # Modify this allowed host you want
+CSRF_TRUSTED_ORIGINS = ["https://inventory-management-idvb.onrender.com"]
 
 # Application definition
 
