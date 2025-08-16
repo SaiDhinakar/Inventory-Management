@@ -24,7 +24,7 @@ This is a web-based Inventory Management System built with **Django** and **Boot
 
 ## Try demo :
 
-Link :
+Link : https://inventory-management-idvb.onrender.com/
 
 Username : testuser
 
